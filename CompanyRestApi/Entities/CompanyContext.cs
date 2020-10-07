@@ -11,7 +11,7 @@ namespace CompanyRestApi.Entities
     {
         public CompanyContext(DbContextOptions<CompanyContext> options) : base (options)
         {
-            //Database.EnsureCreated();
+            //Database.EnsureCreated();;
             Database.Migrate();
         }
         public DbSet<Company> companies { get; set; }
