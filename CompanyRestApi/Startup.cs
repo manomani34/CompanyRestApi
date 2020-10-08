@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-
+using CompanyRestApi.Services;
 
 namespace CompanyRestApi
 {
@@ -33,10 +33,11 @@ namespace CompanyRestApi
             var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=CompanyDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
             services.AddDbContext<CompanyContext>(o => o.UseSqlServer(connectionString));
             services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env , CompanyContext companyContext)
         {
             if (env.IsDevelopment())
             {
@@ -54,6 +55,7 @@ namespace CompanyRestApi
             //    endpoints.MapControllers();
             //});
 
+            companyContext.EnsureSeedDataForContext();
             app.UseMvc();
         }
     }
